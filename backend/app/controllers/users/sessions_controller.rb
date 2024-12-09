@@ -3,9 +3,8 @@
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
   include ActionController::Cookies
-  #include RackSessionFix
 
-  after_action :set_jwt_cookies, only: :create
+  before_action :set_jwt_cookies, only: :create
 
   def create
     super do |response|
@@ -33,7 +32,7 @@ class Users::SessionsController < Devise::SessionsController
     cookies.encrypted[:auth_token] = {
       value: token,
       same_site: :none,
-      secure: true,
+      # secure: true,
       httponly: true,
       expires: 1.hour.from_now
     }

@@ -2,7 +2,6 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   include ActionController::Cookies
-  include RackSessionFix
   respond_to :json
 
   def create
