@@ -32,7 +32,7 @@ class Users::SessionsController < Devise::SessionsController
     cookies.encrypted[:auth_token] = {
       value: token,
       same_site: :none,
-      # secure: true,
+      secure: true,
       httponly: true,
       expires: 1.hour.from_now
     }

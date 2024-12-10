@@ -5,8 +5,18 @@ module Api
       class PostsController < ApplicationController
         before_action :authenticate_user!, only: [:create]
         def index
-          @posts = Post.all
-          render json: @posts
+          @posts = Post.joins(:user).select("posts.*, users.email AS email")
+
+          formated_posts = @posts.map do |post|
+            post.attributes.merge(
+              email: post.email,
+              title: post.title,
+              body: post.body,
+              created_at: post.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+              updated_at: post.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+            )
+          end
+          render json: formated_posts
         end
 
         def create

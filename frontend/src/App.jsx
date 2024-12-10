@@ -27,6 +27,7 @@ function App() {
     <div>
       <Link to="/register">Register</Link>
       <Link to="/login">Login</Link>
+      <Link to="/newpost">Add new Post</Link>
     </div>
      <div>
         {
@@ -34,6 +35,7 @@ function App() {
             return(
               <div key={post.id}>
                 <p>{post.created_at}</p>
+                <p>{post.email}</p>
                 <p>{post.title}</p>  
                 <p>{post.body}</p>
               </div>

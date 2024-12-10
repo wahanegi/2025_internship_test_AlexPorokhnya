@@ -3,10 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
     const [user, setUser] = useState({});
+    const [errors, setErrors] = useState([]);
 
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         axios.
         post("http://localhost:3000/users/sign_in", 
             {
@@ -15,10 +17,14 @@ const Login = () => {
             {
                 withCredentials: true
             }
-        ).then(resp => {
-            console.log("Confirrmation token: ", user.confirmation_token)
-        }).catch(error => {
-            console.log(error);
+        )
+        .then(
+            navigate("/")
+        ).catch(error => {
+            setErrors([
+                error.response.data.error
+            ])
+            console.log("Errors: ",error.response.data.error);
         })
     }
 
@@ -33,9 +39,20 @@ const Login = () => {
     return (
         <>
             <div>
+            {   errors &&
+                    errors.map((err, index) => {
+                        return(
+                            <div key={index}>
+                            <p>{err}</p>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            <div>
                 <form onSubmit={handleSubmit}> 
                     <input type="text" name="email" onChange={handleChange} placeholder="Enter email"></input>
-                    <input type="text" name="password" onChange={handleChange} placeholder="Enter password"></input>
+                    <input type="password" name="password" onChange={handleChange} placeholder="Enter password"></input>
                     <input type="submit" name="sumbit" value="Login"></input>
                 </form>
 
