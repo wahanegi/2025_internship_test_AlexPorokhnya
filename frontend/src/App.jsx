@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import axios from "axios"
+import { Link } from 'react-router-dom';
 
 
 function App() {
@@ -23,6 +24,10 @@ function App() {
 
   return (
     <>
+    <div>
+      <Link to="/register">Register</Link>
+      <Link to="/login">Login</Link>
+    </div>
      <div>
         {
           posts.map(post => {

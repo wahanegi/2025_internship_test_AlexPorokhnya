@@ -63,4 +63,16 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+
+  config.action_mailer.smtp_settings ={
+    address: 'sandbox.smtp.mailtrap.io',
+    host: 'sandbox.smtp.mailtrap.io',
+    port: 2525,
+    user_name: "75ab1f8faef663",
+    password: "7e4ced9ca09ee8",
+    authentication: :login,
+    enable_starttls_auto: true
+  }
 end

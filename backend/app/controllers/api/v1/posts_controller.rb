@@ -10,7 +10,7 @@ module Api
         end
 
         def create
-          @post = Post.new post_params
+          @post = Post.new post_params.merge(:user_id => current_user.id)
 
           if @post.save
             render json: {message: "Post successfully created", data: @post}
