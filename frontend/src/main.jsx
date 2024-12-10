@@ -5,6 +5,8 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import Registration from './components/Registration.jsx'
 import Login from './components/Login.jsx'
 import CreatePost from './components/CreatePost.jsx'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap'
 
 const router = createBrowserRouter([
   {
