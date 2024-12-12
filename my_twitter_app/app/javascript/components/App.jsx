@@ -1,27 +1,11 @@
-import {useState, useEffect} from 'react'
-import axios from "axios"
 import { Link } from 'react-router-dom';
+import {usePostFetch} from '../hooks/data-fetch'
 import React from "react";
 import {Fragment} from "react";
 
 function App() {
 
-    const [posts, setPosts] = useState([]);
-    const [errors, setErrors] = useState([]);
-
-    useEffect(() => {
-        axios.get("http://127.0.0.1:3000/api/v1/posts")
-            .then(resp => {
-                setPosts(resp.data)
-                console.log("Resp data: ", resp.data)
-            })
-            .catch(error => {
-                setErrors(
-                    ...errors,
-                    error.data
-                )
-            })
-    }, [posts.length])
+    const [posts, errors] = usePostFetch()
 
     return (
         <>
@@ -31,14 +15,14 @@ function App() {
                 <Link to="/newpost">Add new Post</Link>
                 <a>Hello</a>
             </div>
-            {posts &&
+            {posts.length > 0 &&
                 <div>
                 {
                     posts.map(post => {
                         return (
                             <div key={post.id}>
                                 <p>{post.created_at}</p>
-                                {/*<p>{post.email}</p>*/}
+                                {<p>{post.email}</p>}
                                 <p>{post.title}</p>
                                 <p>{post.body}</p>
                             </div>

@@ -1,6 +1,6 @@
-import {useState, useEffect} from "react"
-import axios from "axios";
+import {useState} from "react"
 import { useNavigate } from "react-router-dom";
+import {login} from "../services/user-manipulating";
 import React from "react";
 const Login = () => {
     const [user, setUser] = useState({});
@@ -10,24 +10,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.
-        post("http://localhost:3000/users/sign_in",
-            {
-                user
-            },
-            {
-                withCredentials: true
-            }
-        )
-            .then(res=> {
-                    navigate("/")
-                }
-            ).catch(error => {
-            setErrors([
-                error.response.data.error
-            ])
-            console.log("Errors: ",error.response.data.error);
-        })
+        login(user,setErrors, navigate);
     }
 
     const handleChange = (e) => {
@@ -35,17 +18,18 @@ const Login = () => {
             ...prevUser ,
             [e.target.name]: e.target.value,
         }))
-
-        console.log("User: ", user);
     }
     return (
         <>
             <div>
-                {   errors &&
+                {   errors.length > 0
+                    &&
                     errors.map((err, index) => {
                         return(
                             <div key={index}>
-                                <p>{err}</p>
+                                {!err.email && !err.password && <p>{JSON.stringify(err)}</p>}
+                                {err['email'] && <p>Email: {err['email']}</p>}
+                                {err['password'] && <p>Password: {err['password']}</p>}
                             </div>
                         )
                     })
@@ -57,8 +41,6 @@ const Login = () => {
                     <input type="password" name="password" onChange={handleChange} placeholder="Enter password"></input>
                     <input type="submit" name="sumbit" value="Login"></input>
                 </form>
-
-                <div>{user.confirmation_token}</div>
             </div>
         </>
     )

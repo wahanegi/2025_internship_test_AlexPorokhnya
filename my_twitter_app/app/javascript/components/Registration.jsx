@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react"
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import {register} from "../services/user-manipulating";
 
 const Registration = () => {
     const [user, setUser] = useState({});
@@ -9,29 +9,7 @@ const Registration = () => {
     const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        const csrfToken  = document.querySelector('[name=csrf-token]').content;
-
-        axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
-        axios.
-        post("http://localhost:3000/users/",
-            {
-                user
-            },
-            {
-                headers: { "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken},
-                withCredentials: true
-            }
-        ).then(res => {
-            navigate("/")
-        })
-            .catch(error => {
-            setErrors([
-                error.response.data.errors
-            ])
-            console.log("Errors: ",error.response);
-        })
+        register(user,setErrors, navigate);
     }
 
     const handleChange = (e) => {
@@ -39,20 +17,19 @@ const Registration = () => {
             ...prevUser ,
             [e.target.name]: e.target.value,
         }))
-
-        console.log("User: ", user);
     }
     return (
         <>
             <div style={{backgroundColor: "gray"}}>
                 <div style={{backgroundColor: "white", minHeight: 600, minWidth: 400}}>
                     <div>
-                        {   errors &&
+                        {   errors.length > 0 &&
                             errors.map((err, index) => {
                                 return(
                                     <div key={index}>
                                         {err['email'] && <p>Email: {err['email']}</p>}
                                         {err['password'] && <p>Password: {err['password']}</p>}
+                                        {!err.email && !err.password && <p>{JSON.stringify(err)}</p>}
                                     </div>
                                 )
                             })

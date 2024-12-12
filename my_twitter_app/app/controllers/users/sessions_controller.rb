@@ -2,10 +2,9 @@
 
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
-
-  skip_before_action :verify_authenticity_token, only: [:create]
   include ActionController::Cookies
 
+  skip_before_action :verify_authenticity_token, only: [:create]
   before_action :set_jwt_cookies, only: :create
 
   def create
@@ -28,9 +27,6 @@ class Users::SessionsController < Devise::SessionsController
     token = Warden::JWTAuth::UserEncoder.new.call(
       current_user, :user, nil
     ).first
-
-    Rails.logger.info "JWT: Token #{token}"
-    Rails.logger.info "SECRET_KEY_BASE: #{Rails.application.secrets.secret_key_base}"
     cookies.encrypted[:auth_token] = {
       value: token,
       same_site: :strict,
@@ -38,7 +34,5 @@ class Users::SessionsController < Devise::SessionsController
       httponly: true,
       expires: 1.hour.from_now
     }
-
-    Rails.logger.info "JWT: Token encrypted: #{cookies.encrypted[:auth_token]}"
   end
 end

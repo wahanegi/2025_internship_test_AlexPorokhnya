@@ -1,2 +1,0 @@
-class AddJtiToUser < ApplicationRecord
-end

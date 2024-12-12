@@ -1,67 +1,37 @@
-import { useState, useEffect } from "react"
-import axios from "axios";
+import { useState } from "react"
+import {postCreation} from "../services/post-manipulating";
 import { useNavigate } from "react-router-dom";
+import {useCurrentUser} from '../hooks/data-fetch'
 import React from "react";
 
 const CreatePost =() => {
     const [post, setPost] = useState({});
     const [errors, setErrors] = useState([]);
-    const [user, setUser] = useState({});
+    const user = useCurrentUser();
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        axios
-            .get("http://localhost:3000/current_user",
-                {
-                    withCredentials: true
-                }
-            ).then(resp => {
-            setUser(resp.data)
-            console.log("User: ", resp.data)
-        }).catch(errors => {
-            errors
-        })
-    }, [])
     const handleChange = (e) => {
         setPost(prev => ({
             ...prev ,
             [e.target.name]: e.target.value,
         }))
-        console.log(post)
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios
-            .post("http://localhost:3000/api/v1/posts",
-                {
-                    post:post
-                },
-                {
-                    withCredentials: true
-                })
-            .then((res) => {
-                navigate("/")
-            })
-            .catch(error => {
-                setErrors(
-                    [
-                        error.response.data.data
-                    ]
-                )
-                console.log("Errors: ", error.response.data.data)
-            })
+        postCreation(post,setErrors,navigate);
     }
     return (
         <>
             <div>
                 {
-                    errors &&
+                    errors.length > 0 && user &&
                     errors.map((err, index) => {
                         return(
                             <div key={index}>
                                 {err['body'] && <p>Body: {err['body']}</p>}
                                 {err['title'] && <p>Title: {err['title']}</p>}
+                                {!err.body && !err.title && <p>{JSON.stringify(err)}</p>}
                             </div>
                         )
                     })
