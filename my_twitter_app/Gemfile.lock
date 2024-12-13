@@ -231,6 +231,8 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.13.2)
+    shoulda-matchers (6.4.0)
+      activesupport (>= 5.2.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -289,6 +291,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 7.0.8, >= 7.0.8.6)
   rspec-rails (~> 5.0.0)
+  shoulda-matchers
   sprockets-rails
   stimulus-rails
   turbo-rails

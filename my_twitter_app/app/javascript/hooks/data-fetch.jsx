@@ -5,7 +5,7 @@ export function useCurrentUser(){
     const [user, setUser] = useState({});
 
     axios
-        .get("http://localhost:3000/current_user",
+        .get("/current_user",
             {
                 withCredentials: true
             }
@@ -22,7 +22,7 @@ export function usePostFetch() {
 
     useEffect(() => {
         axios
-            .get("http://127.0.0.1:3000/api/v1/posts")
+            .get("/api/v1/posts")
             .then(resp => {
                 setPosts(resp.data)
             })

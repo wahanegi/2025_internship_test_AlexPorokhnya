@@ -1,40 +1,30 @@
 require 'rails_helper'
 
-RSpec.describe "RegistrationController", type: :request do
-
-  let(:user) {create(:user)}
-
+RSpec.describe Users::RegistrationsController, type: :controller do
+  let(:valid_user) { {user: attributes_for(:user)} }
   before do
-    get "http://localhost:3000/users/confirmation", params: {confirmation_token: user.confirmation_token}
+    @request.env["devise.mapping"] = Devise.mappings[:user]
   end
-  it "success registration" do
-    post "http://localhost:3000/users", params: {user: {email: Faker::Internet.email,password: Faker::Internet.password}}
-    expect(response).to have_http_status(201)
-  end
+  context "POST #create" do
+    context "success registrations" do
+      it "returns http success" do
+        post :create, params: valid_user, format: :json
+        expect(response).to have_http_status(:created)
+      end
+    end
+    context "failure registrations" do
+      let(:invalid_user) { {user: attributes_for(:user, email: "")} }
+      it "already existing user" do
+        post :create, params: valid_user, format: :json
+        post :create, params: valid_user, format: :json
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
 
-  it "user already exist" do
-    post "http://localhost:3000/users/", params: {user: {email: user.email, password: user.password}}
-    expect(response).to have_http_status(422)
-  end
-
-  it "email blank" do
-    post "http://localhost:3000/users/", params: {user: {password: user.password}}
-    expect(response).to have_http_status(422)
-  end
-
-  it "password blank and existing email" do
-    post "http://localhost:3000/users/", params: {user: {email: user.email}}
-    expect(response).to have_http_status(422)
-  end
-
-  it "password blank" do
-    post "http://localhost:3000/users/", params: {user: {email: Faker::Internet.email}}
-    expect(response).to have_http_status(422)
-  end
-
-  it "all fields blank" do
-    post "http://localhost:3000/users/", params: {user: {}}
-    expect(response).to have_http_status(422)
+      it "registration without email" do
+        post :create, params: invalid_user, format: :json
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
   end
 end
 

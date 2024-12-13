@@ -1,17 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe "ApplicationController", type: :request do
+RSpec.describe ApplicationController, type: :controller do
   let(:user) {create(:user)}
-
-  it "#current return signed in current user" do
-    get "http://localhost:3000/users/confirmation", params: {confirmation_token: user.confirmation_token}
-    post "http://localhost:3000/users/sign_in", params: {user: {email: user.email, password: user.password}}
-    get "http://localhost:3000/current_user"
-    expect(response).to have_http_status(:ok)
+  let!(:token) do
+    JWT.encode({ sub: user.id }, Rails.application.secrets.secret_key_base)
   end
+  context 'GET #current' do
+    it 'signed in current user' do
+      request.cookies[:auth_token] = token
+      get :current
+      expect(response).to have_http_status(:ok)
+    end
 
-  it "#current unauthorized" do
-    get "http://localhost:3000/current_user"
-    expect(response).to have_http_status(401)
+    it "don't have current user" do
+      get :current
+      expect(response).to have_http_status(:unauthorized)
+    end
   end
 end

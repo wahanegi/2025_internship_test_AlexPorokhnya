@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function login(user, setErrors, navigate){
     axios.
-    post("http://localhost:3000/users/sign_in",
+    post("/users/sign_in",
         {
             user
         },
@@ -22,7 +22,7 @@ export function login(user, setErrors, navigate){
 
 export function register(user, setErrors, navigate){
     axios.
-    post("http://localhost:3000/users/",
+    post("/users/",
         {
             user
         },

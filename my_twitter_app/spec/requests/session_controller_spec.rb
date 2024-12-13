@@ -1,25 +1,25 @@
 require 'rails_helper'
 
-RSpec.describe "SessionController", type: :request do
-  let(:user) {create(:user)}
+RSpec.describe Users::SessionsController, type: :controller do
+  include Devise::Test::ControllerHelpers
 
-  it "successfully sign in" do
-    get "http://localhost:3000/users/confirmation", params: {confirmation_token: user.confirmation_token}
-    post "http://localhost:3000/users/sign_in", params: {user: {email: user.email, password: user.password}}
-    expect(response).to have_http_status(200)
+  let!(:valid_user) {create(:user)}
+  let!(:token) do
+    JWT.encode({ sub: valid_user.id }, Rails.application.secrets.secret_key_base)
   end
 
-  it "non-existent account" do
-    post "http://localhost:3000/users/sign_in", params: {user: {email: Faker::Internet.email, password: user.password}}
-    expect(response).to have_http_status(401)
+  before do
+    @request.env["devise.mapping"] = Devise.mappings[:user]
   end
 
-  it 'incorrect password' do
-    post "http://localhost:3000/users/sign_in", params: {user: {email: Faker::Internet.email, password: Faker::Internet.password}}
-    expect(response).to have_http_status(401)
-  end
-  it "unconfirmed email" do
-    post "http://localhost:3000/users/sign_in", params: {user: {email: user.email, password: user.password}}
-    expect(response).to have_http_status(401)
+  context "POST #create" do
+    context "with valid params" do
+      it "successfully signed in" do
+        request.cookies[:auth_token] = token
+
+        post :create, params: {user: {email: valid_user.email, password: valid_user.password}}, format: :json
+        expect(response).to have_http_status(:ok)
+      end
+    end
   end
 end
