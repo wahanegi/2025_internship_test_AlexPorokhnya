@@ -20,26 +20,36 @@ const Registration = () => {
     }
     return (
         <>
-            <div style={{backgroundColor: "gray"}}>
-                <div style={{backgroundColor: "white", minHeight: 600, minWidth: 400}}>
-                    <div>
-                        {   errors.length > 0 &&
-                            errors.map((err, index) => {
-                                return(
-                                    <div key={index}>
-                                        {err['email'] && <p>Email: {err['email']}</p>}
-                                        {err['password'] && <p>Password: {err['password']}</p>}
-                                        {!err.email && !err.password && <p>{JSON.stringify(err)}</p>}
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                    <div className=" d-flex justify-content-center align-items-center vh-100">
-                        <form onSubmit={handleSubmit} className="d-flex flex-column mt-4 ms-4">
-                            <input className="mb-4 form-control" style={{minWidth: 300}} type="text" name="email" onChange={handleChange} placeholder="Enter email"></input>
-                            <input className="mb-4 form-control" style={{minWidth: 300}} type="password" name="password" onChange={handleChange} placeholder="Enter password"></input>
-                            <input className="btn btn-primary" type="submit" name="sumbit" value="Register"></input>
+            <div>
+                <div className="bg-secondary" style={{minHeight: 600, minWidth: 400}}>
+                    <div className=" d-flex flex-column justify-content-center align-items-center vh-100">
+                        <form onSubmit={handleSubmit}
+                              className="d-flex flex-column justify-content-center align-items-center bg-white"
+                              style={{minHeight: 600, minWidth: 400}}>
+                            <div className="bg-danger mb-5 w-75 opacity-75 rounded">
+                                {errors.length > 0 &&
+                                    errors.map((err, index) => {
+                                        return (
+                                            <div className=" border border-danger border-3" key={index}>
+                                                {err['email'] && <p className="fs-5 ms-3 mt-2 text-white">Email: {err['email']}</p>}
+                                                {err['password'] && <p className="fs-5 mt-2 ms-3 text-white">Password: {err['password']}</p>}
+                                                {!err.email && !err.password && <p>{JSON.stringify(err)}</p>}
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <p className="fs-5 mb-3">Sign Up</p>
+                            <div className="ms-3 me-3">
+                                <input className="mb-4 form-control" style={{minWidth: 400}} type="text" name="email"
+                                       onChange={handleChange} placeholder="Enter email"></input>
+                            </div>
+                            <div className="ms-3 me-3">
+                                <input className="mb-4 form-control" style={{minWidth: 400}} type="password"
+                                       name="password" onChange={handleChange} placeholder="Enter password"></input>
+                            </div>
+                            <input className="btn btn-primary mt-5" style={{minWidth: 300}} type="submit" name="sumbit"
+                                   value="Register"></input>
                         </form>
                     </div>
                 </div>

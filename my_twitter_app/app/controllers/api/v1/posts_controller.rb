@@ -17,7 +17,7 @@ module Api
             updated_at: post.updated_at.strftime('%Y-%m-%d %H:%M:%S')
           )
         end
-        render json: @posts
+        render json: formated_posts
       end
 
       def create
