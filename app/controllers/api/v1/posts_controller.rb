@@ -6,7 +6,7 @@ module Api
 
       skip_before_action :verify_authenticity_token, only: [:create]
       def index
-        @posts = Post.joins(:user).select("posts.*, users.email AS email")
+        @posts = Post.joins(:user).select("posts.*, users.email AS email").order("posts.created_at DESC")
 
         formated_posts = @posts.map do |post|
           post.attributes.merge(

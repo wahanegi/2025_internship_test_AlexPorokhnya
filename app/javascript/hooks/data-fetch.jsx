@@ -3,16 +3,16 @@ import {useState, useEffect} from "react";
 import axios from "axios";
 export function useCurrentUser(){
     const [user, setUser] = useState({});
-
-    axios
-        .get("/current_user",
-            {
-                withCredentials: true
-            }
-        ).then(resp => {
-        setUser(resp.data)
-    })
-
+    useEffect(() => {
+        axios
+            .get("/current_user",
+                {
+                    withCredentials: true
+                }
+            ).then(resp => {
+            setUser(resp.data)
+        })
+    }, []);
     return user;
 }
 
