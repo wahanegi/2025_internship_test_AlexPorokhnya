@@ -21,11 +21,11 @@ After completing this first phase of work, someone on the Cloverpop Engineering 
 
 ### Submitting Work
 
-  * All work should be submitted in a separate branch and made into pull requests.
-  * Starting out, use your best judgement as to how to segment the work into separate pull requests.
-  * Assign each pull request to youself and set the "Reviewers" to: `Maryna-Harasko`, `rogergraves`, `LyubovP` and `SerhiiBorozenets`.
-  * If we assign "Issues", please attach issues to the pull requests that address them.
-  * Each pull request should list the amount of time you spent on it, e.g. `3.25 hours` for 3 hours and 15 minutes.
+ * All work should be submitted in a separate branch and made into pull requests.
+ * Starting out, use your best judgement as to how to segment the work into separate pull requests.
+ * Assign each pull request to youself and set the "Reviewers" to: `Maryna-Harasko`, `rogergraves`, `LyubovP` and `SerhiiBorozenets`.
+ * If we assign "Issues", please attach issues to the pull requests that address them.
+ * Each pull request should list the amount of time you spent on it, e.g. `3.25 hours` for 3 hours and 15 minutes.
 
 ### Demonstrating Work
 
@@ -33,16 +33,15 @@ You will be provided a Heroku app to post your application to. It's recommended 
 
 ## Conditions
 
-  * There should be no collaboration with teammates or other people you know on this project, however you can ask Cloverpop personnel for help.
-  * Everything submitted should you written by you alone. Excessive copy and pasting from existing applications or using tools that generate excessive amounts of code is forbidden.
-  * Ask in advance for permission if you wish to significantly deviate from the requirements.
-  * Do frequent commits instead of few commits with logs of changes. Push your commits to Github at least once per day.
+ * There should be no collaboration with teammates or other people you know on this project, however you can ask Cloverpop personnel for help.
+ * Everything submitted should you written by you alone. Excessive copy and pasting from existing applications or using tools that generate excessive amounts of code is forbidden.
+ * Ask in advance for permission if you wish to significantly deviate from the requirements.
+ * Do frequent commits instead of few commits with logs of changes. Push your commits to Github at least once per day.
 
 ## Appropriate LLM Use
 
 Using LLM for help on debugging something you are stuck in is acceptable. Asking it to generate a lot of code is not. Examples:
-  * "What could be causing my application to fail given this log? `Paste of error log` -- **is OK**
-  * "Please analyze this Ruby method and give me a critique of without code examples: `paste of method`" -- **is OK**
-  * "Please generate Ruby on Rails code for ..." -- **is considered excessive and NOT OK**
-  * "Rewrite this controller to make it better: `Paste of a ruby file` -- **is considered excessive and NOT OK**
-
+ * "What could be causing my application to fail given this log? `Paste of error log` -- **is OK**
+ * "Please analyze this Ruby method and give me a critique of without code examples: `paste of method`" -- **is OK**
+ * "Please generate Ruby on Rails code for ..." -- **is considered excessive and NOT OK**
+ * "Rewrite this controller to make it better: `Paste of a ruby file` -- **is considered excessive and NOT OK**
