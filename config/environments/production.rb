@@ -92,13 +92,13 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.default_url_options = { host: 'https://internship-project-alexporokhn-e1b689cea907.herokuapp.com', protocol: 'https' }
+  config.action_mailer.default_url_options = { host: ENV['DOMAIN_URL'], protocol: 'https' }
 
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    user_name: '75ab1f8faef663',
-    password: '7e4ced9ca09ee8',
+    user_name: ENV['SMTP_USERNAME'],
+    password: ENV['SMTP_PASSWORD'],
     address: 'sandbox.smtp.mailtrap.io',
     host: 'sandbox.smtp.mailtrap.io',
     port: '2525',
