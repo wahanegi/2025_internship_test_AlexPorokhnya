@@ -23,25 +23,25 @@ const CreatePost =() => {
     }
     return (
         <>
-            <div>
+            <div className="bg-danger mb-5 w-100 opacity-75 rounded">
                 {
                     errors.length > 0 && user &&
                     errors.map((err, index) => {
                         return(
-                            <div key={index}>
-                                {err['body'] && <p>Body: {err['body']}</p>}
-                                {err['title'] && <p>Title: {err['title']}</p>}
+                            <div className="border border-danger border-3" key={index}>
                                 {!err.body && !err.title && <p>{JSON.stringify(err)}</p>}
+                                {err['body'] && <p className="fs-5 ms-3 mt-2 text-white">Body: {err['body']}</p>}
+                                {err['title'] && <p className="fs-5 ms-3 mt-2 text-white">Title: {err['title']}</p>}
                             </div>
                         )
                     })
                 }
             </div>
             <div>
-                <form onSubmit={handleSubmit}>
-                    Title: <input type="text" placeholder="title" onChange={handleChange} defaultValue="" name="title"></input>
-                    Body: <input type="text" placeholder="body" onChange={handleChange} defaultValue="" name="body"></input>
-                    <input type="submit" value="Save"></input>
+                <form className="d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
+                    <p className ="mb-2">Title </p><input className="form-control mb-4" style={{maxWidth: 500}} type="text" placeholder="Title" onChange={handleChange} defaultValue="" name="title"></input>
+                    <p className="mb-2">Body</p> <input className="form-control mb-4" style={{maxWidth: 500}} type="text" placeholder="Body" onChange={handleChange} defaultValue="" name="body"></input>
+                    <input className="btn btn-primary" style={{minWidth: 500}} type="submit" value="Save"></input>
                 </form>
             </div>
         </>
