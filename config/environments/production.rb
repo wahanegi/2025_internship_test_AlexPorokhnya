@@ -95,6 +95,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'https://internship-project-alexporokhn-e1b689cea907.herokuapp.com', protocol: 'https' }
 
   config.action_mailer.delivery_method = :smtp
+
   config.action_mailer.smtp_settings = {
     user_name: '75ab1f8faef663',
     password: '7e4ced9ca09ee8',
