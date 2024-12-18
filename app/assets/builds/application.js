@@ -35919,7 +35919,7 @@ function postCreation(post, setErrors, navigate) {
   axios_default.post(
     "/api/v1/posts",
     {
-      post: { post }
+      post
     },
     {
       withCredentials: true
@@ -35951,7 +35951,11 @@ var CreatePost = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors([]);
-    postCreation(post, setErrors, navigate);
+    if (post.body == null || post.title == null) {
+      setErrors(["Your post is blank"]);
+    } else {
+      postCreation(post, setErrors, navigate);
+    }
   };
   return /* @__PURE__ */ import_react10.default.createElement(import_react10.default.Fragment, null, /* @__PURE__ */ import_react10.default.createElement("div", { className: "bg-danger mb-5 w-100 opacity-75 rounded" }, errors.length > 0 && user && errors.map((err, index) => {
     return /* @__PURE__ */ import_react10.default.createElement("div", { className: "border border-danger border-3", key: index }, !err.body && !err.title && /* @__PURE__ */ import_react10.default.createElement("p", null, JSON.stringify(err)), err["body"] && /* @__PURE__ */ import_react10.default.createElement("p", { className: "fs-5 ms-3 mt-2 text-white" }, "Body: ", err["body"]), err["title"] && /* @__PURE__ */ import_react10.default.createElement("p", { className: "fs-5 ms-3 mt-2 text-white" }, "Title: ", err["title"]));
