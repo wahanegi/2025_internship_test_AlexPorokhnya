@@ -1,15 +1,16 @@
 import {useState} from "react"
-import { useNavigate } from "react-router-dom";
 import React from "react";
 import {register} from "../services/user-manipulating";
+import {Link} from "react-router-dom";
 
 const Registration = () => {
     const [user, setUser] = useState({});
     const [errors, setErrors] = useState([]);
-    const navigate = useNavigate();
+    const [message, setMessage] = useState("");
     const handleSubmit = (e) => {
         e.preventDefault();
-        register(user,setErrors, navigate);
+        setErrors([])
+        register(user,setErrors, setMessage);
     }
 
     const handleChange = (e) => {
@@ -31,12 +32,22 @@ const Registration = () => {
                                     errors.map((err, index) => {
                                         return (
                                             <div className=" border border-danger border-3" key={index}>
-                                                {err['email'] && <p className="fs-5 ms-3 mt-2 text-white">Email: {err['email']}</p>}
-                                                {err['password'] && <p className="fs-5 mt-2 ms-3 text-white">Password: {err['password']}</p>}
+                                                {err['email'] &&
+                                                    <p className="fs-5 ms-3 mt-2 text-white">Email: {err['email']}</p>}
+                                                {err['password'] &&
+                                                    <p className="fs-5 mt-2 ms-3 text-white">Password: {err['password']}</p>}
                                                 {!err.email && !err.password && <p>{JSON.stringify(err)}</p>}
                                             </div>
                                         )
                                     })
+                                }
+                            </div>
+                            <div className="bg-success mb-5 w-75 opacity-75 rounded">
+                                {
+                                    message.length > 0 &&
+                                    <div className=" border border-susscess border-3">
+                                        <p className="ms-2">{message}</p>
+                                    </div>
                                 }
                             </div>
                             <p className="fs-5 mb-3">Sign Up</p>
@@ -50,6 +61,10 @@ const Registration = () => {
                             </div>
                             <input className="btn btn-primary mt-5" style={{minWidth: 300}} type="submit" name="sumbit"
                                    value="Register"></input>
+
+                            <div className="mt-4">
+                                Sign In <Link to="/login">link</Link>
+                            </div>
                         </form>
                     </div>
                 </div>

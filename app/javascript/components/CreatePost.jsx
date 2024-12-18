@@ -19,6 +19,7 @@ const CreatePost =() => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
+        setErrors([]);
         postCreation(post,setErrors,navigate);
     }
     return (

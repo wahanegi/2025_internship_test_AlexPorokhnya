@@ -35719,20 +35719,6 @@ function usePostFetch() {
 // app/javascript/components/App.jsx
 var import_react3 = __toESM(require_react());
 var import_react4 = __toESM(require_react());
-function App() {
-  const [posts, errors] = usePostFetch();
-  return /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex bg-secondary" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-column ms-5", style: { minWidth: 300 } }, /* @__PURE__ */ import_react3.default.createElement(Link, { className: "btn btn-info m-3", to: "/register" }, "Sign Up"), /* @__PURE__ */ import_react3.default.createElement(Link, { className: "btn btn-info m-3", to: "/login" }, "Sign In"), /* @__PURE__ */ import_react3.default.createElement(Link, { className: "btn btn-warning rounded-pill m-3", to: "/newpost" }, "Add new Post")), /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-grow-1 flex-column align-items-center flex-column   " }, posts.length > 0 && /* @__PURE__ */ import_react3.default.createElement("div", { className: "mx-5 mt-3" }, posts.map((post) => {
-    return /* @__PURE__ */ import_react3.default.createElement("div", { className: "card bg-dark mb-3 text-white ps-3", style: { minWidth: 700 }, key: post.id }, /* @__PURE__ */ import_react3.default.createElement("p", { className: "card-header" }, post.created_at), /* @__PURE__ */ import_react3.default.createElement("p", { className: "mt-3 card-title" }, "From: ", post.email), /* @__PURE__ */ import_react3.default.createElement("div", { className: "card-body" }, /* @__PURE__ */ import_react3.default.createElement("p", null, post.title), /* @__PURE__ */ import_react3.default.createElement("p", { className: "" }, post.body)));
-  })))));
-}
-var App_default = App;
-
-// app/javascript/components/index.jsx
-var import_react12 = __toESM(require_react());
-
-// app/javascript/components/Registration.jsx
-var import_react5 = __toESM(require_react());
-var import_react6 = __toESM(require_react());
 
 // app/javascript/services/user-manipulating.jsx
 function login(user, setErrors, navigate) {
@@ -35754,7 +35740,15 @@ function login(user, setErrors, navigate) {
     ]);
   });
 }
-function register(user, setErrors, navigate) {
+function logout() {
+  axios_default.delete(
+    "/users/sign_out",
+    { withCredentials: true }
+  ).then((res) => {
+    window.location.reload();
+  });
+}
+function register(user, setErrors, setMessage) {
   axios_default.post(
     "/users/",
     {
@@ -35764,7 +35758,7 @@ function register(user, setErrors, navigate) {
       withCredentials: true
     }
   ).then((res) => {
-    navigate("/");
+    setMessage("Please confirm your email and sign in");
   }).catch((error2) => {
     setErrors([
       error2.response.data.errors
@@ -35772,14 +35766,30 @@ function register(user, setErrors, navigate) {
   });
 }
 
+// app/javascript/components/App.jsx
+function App() {
+  const [posts, errors] = usePostFetch();
+  const user = useCurrentUser();
+  return /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex bg-secondary" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-column ms-5", style: { minWidth: 300 } }, Object.keys(user).length === 0 && /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-column" }, /* @__PURE__ */ import_react3.default.createElement(Link, { className: "btn btn-info m-3", to: "/register" }, "Sign Up"), /* @__PURE__ */ import_react3.default.createElement(Link, { className: "btn btn-info m-3", to: "/login" }, "Sign In")), Object.keys(user).length > 0 && /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-column" }, /* @__PURE__ */ import_react3.default.createElement("p", { className: "text-white align-self-center" }, user.email), /* @__PURE__ */ import_react3.default.createElement(Link, { className: "btn btn-warning rounded-pill m-3", to: "/newpost" }, "Add new Post"), /* @__PURE__ */ import_react3.default.createElement("button", { className: "btn btn-warning m-3 align-content-lg-end", onClick: logout }, "LogOut"))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-grow-1 flex-column align-items-center flex-column   " }, posts.length > 0 && /* @__PURE__ */ import_react3.default.createElement("div", { className: "mx-5 mt-3" }, posts.map((post) => {
+    return /* @__PURE__ */ import_react3.default.createElement("div", { className: "card bg-dark mb-3 text-white ps-3", style: { minWidth: 700 }, key: post.id }, /* @__PURE__ */ import_react3.default.createElement("p", { className: "card-header" }, post.created_at), /* @__PURE__ */ import_react3.default.createElement("p", { className: "mt-3 card-title" }, "From: ", post.email), /* @__PURE__ */ import_react3.default.createElement("div", { className: "card-body" }, /* @__PURE__ */ import_react3.default.createElement("p", null, post.title), /* @__PURE__ */ import_react3.default.createElement("p", { className: "" }, post.body)));
+  })))));
+}
+var App_default = App;
+
+// app/javascript/components/index.jsx
+var import_react12 = __toESM(require_react());
+
 // app/javascript/components/Registration.jsx
+var import_react5 = __toESM(require_react());
+var import_react6 = __toESM(require_react());
 var Registration = () => {
   const [user, setUser] = (0, import_react5.useState)({});
   const [errors, setErrors] = (0, import_react5.useState)([]);
-  const navigate = useNavigate();
+  const [message, setMessage] = (0, import_react5.useState)("");
   const handleSubmit = (e) => {
     e.preventDefault();
-    register(user, setErrors, navigate);
+    setErrors([]);
+    register(user, setErrors, setMessage);
   };
   const handleChange = (e) => {
     setUser((prevUser) => ({
@@ -35797,6 +35807,7 @@ var Registration = () => {
     /* @__PURE__ */ import_react6.default.createElement("div", { className: "bg-danger mb-5 w-75 opacity-75 rounded" }, errors.length > 0 && errors.map((err, index) => {
       return /* @__PURE__ */ import_react6.default.createElement("div", { className: " border border-danger border-3", key: index }, err["email"] && /* @__PURE__ */ import_react6.default.createElement("p", { className: "fs-5 ms-3 mt-2 text-white" }, "Email: ", err["email"]), err["password"] && /* @__PURE__ */ import_react6.default.createElement("p", { className: "fs-5 mt-2 ms-3 text-white" }, "Password: ", err["password"]), !err.email && !err.password && /* @__PURE__ */ import_react6.default.createElement("p", null, JSON.stringify(err)));
     })),
+    /* @__PURE__ */ import_react6.default.createElement("div", { className: "bg-success mb-5 w-75 opacity-75 rounded" }, message.length > 0 && /* @__PURE__ */ import_react6.default.createElement("div", { className: " border border-susscess border-3" }, /* @__PURE__ */ import_react6.default.createElement("p", { className: "ms-2" }, message))),
     /* @__PURE__ */ import_react6.default.createElement("p", { className: "fs-5 mb-3" }, "Sign Up"),
     /* @__PURE__ */ import_react6.default.createElement("div", { className: "ms-3 me-3" }, /* @__PURE__ */ import_react6.default.createElement(
       "input",
@@ -35829,7 +35840,8 @@ var Registration = () => {
         name: "sumbit",
         value: "Register"
       }
-    )
+    ),
+    /* @__PURE__ */ import_react6.default.createElement("div", { className: "mt-4" }, "Sign In ", /* @__PURE__ */ import_react6.default.createElement(Link, { to: "/login" }, "link"))
   )))));
 };
 var Registration_default = Registration;
@@ -35893,7 +35905,8 @@ var Login = () => {
         name: "sumbit",
         value: "Log In"
       }
-    )
+    ),
+    /* @__PURE__ */ import_react8.default.createElement("div", { className: "mt-4" }, "Sign Up ", /* @__PURE__ */ import_react8.default.createElement(Link, { to: "/register" }, "link"))
   )))));
 };
 var Login_default = Login;
@@ -35937,6 +35950,7 @@ var CreatePost = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrors([]);
     postCreation(post, setErrors, navigate);
   };
   return /* @__PURE__ */ import_react10.default.createElement(import_react10.default.Fragment, null, /* @__PURE__ */ import_react10.default.createElement("div", { className: "bg-danger mb-5 w-100 opacity-75 rounded" }, errors.length > 0 && user && errors.map((err, index) => {

@@ -19,8 +19,15 @@ export function login(user, setErrors, navigate){
         ])
     })
 }
-
-export function register(user, setErrors, navigate){
+export function logout(){
+    axios.
+    delete("/users/sign_out",
+        {withCredentials: true}
+    ).then(res=> {
+        window.location.reload()
+    })
+}
+export function register(user, setErrors, setMessage){
     axios.
     post("/users/",
         {
@@ -30,7 +37,7 @@ export function register(user, setErrors, navigate){
             withCredentials: true
         }
     ).then(res => {
-        navigate("/")
+        setMessage("Please confirm your email and sign in")
     }).catch(error => {
             setErrors([
                 error.response.data.errors

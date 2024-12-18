@@ -2,6 +2,7 @@ import {useState} from "react"
 import { useNavigate } from "react-router-dom";
 import {login} from "../services/user-manipulating";
 import React from "react";
+import {Link} from "react-router-dom";
 const Login = () => {
     const [user, setUser] = useState({});
     const [errors, setErrors] = useState([]);
@@ -32,8 +33,10 @@ const Login = () => {
                                     errors.map((err, index) => {
                                         return (
                                             <div className=" border border-danger border-3" key={index}>
-                                                {err['email'] && <p className="fs-5 ms-3 mt-2 text-white">Email: {err['email']}</p>}
-                                                {err['password'] && <p className="fs-5 mt-2 ms-3 text-white">Password: {err['password']}</p>}
+                                                {err['email'] &&
+                                                    <p className="fs-5 ms-3 mt-2 text-white">Email: {err['email']}</p>}
+                                                {err['password'] &&
+                                                    <p className="fs-5 mt-2 ms-3 text-white">Password: {err['password']}</p>}
                                                 {!err.email && !err.password && <p>{JSON.stringify(err)}</p>}
                                             </div>
                                         )
@@ -51,6 +54,8 @@ const Login = () => {
                             </div>
                             <input className="btn btn-primary mt-5" style={{minWidth: 300}} type="submit" name="sumbit"
                                    value="Log In"></input>
+
+                            <div className="mt-4">Sign Up <Link to="/register">link</Link></div>
                         </form>
                     </div>
                 </div>

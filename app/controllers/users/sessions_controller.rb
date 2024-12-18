@@ -4,7 +4,7 @@ class Users::SessionsController < Devise::SessionsController
   respond_to :json
   include ActionController::Cookies
 
-  skip_before_action :verify_authenticity_token, only: [:create]
+  skip_before_action :verify_authenticity_token, only: [:create, :destroy]
   before_action :set_jwt_cookies, only: :create
 
   def create
@@ -18,9 +18,23 @@ class Users::SessionsController < Devise::SessionsController
       },status: :ok and return
     end
   end
+  def destroy
+    super do
+      if cookies.encrypted[:auth_token].present?
+        cookies.delete(:auth_token)
+      end
+    end
+  end
 
   private
 
+  def respond_to_on_destroy
+    if !current_user
+      render json: { message: "Successfully logged out" }, status: :ok
+    else
+      render json: { error: "User was not logged in" }, status: :unauthorized
+    end
+  end
   def set_jwt_cookies
     return unless current_user
 
