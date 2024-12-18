@@ -20,8 +20,8 @@ const CreatePost =() => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setErrors([]);
-        if(post.body == null || post.title == null ){
-            setErrors(["Your post is blank"]);
+        if(post.body == null && post.title == null ){
+            setErrors(['Your post is blank']);
         }else {
             postCreation(post, setErrors, navigate);
         }

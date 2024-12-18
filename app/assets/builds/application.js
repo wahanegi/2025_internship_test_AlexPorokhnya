@@ -35951,7 +35951,7 @@ var CreatePost = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors([]);
-    if (post.body == null || post.title == null) {
+    if (post.body == null && post.title == null) {
       setErrors(["Your post is blank"]);
     } else {
       postCreation(post, setErrors, navigate);
