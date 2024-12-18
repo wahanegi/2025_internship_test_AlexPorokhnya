@@ -35919,7 +35919,7 @@ function postCreation(post, setErrors, navigate) {
   axios_default.post(
     "/api/v1/posts",
     {
-      post
+      post: { post }
     },
     {
       withCredentials: true
