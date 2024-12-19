@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
       if token.blank?
         return {error:"Unauthorized, token is blank", status: 401 }
       end
-
       begin
         payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
         @current_user = User.find(payload["sub"])

@@ -22,4 +22,14 @@ RSpec.describe Users::SessionsController, type: :controller do
       end
     end
   end
+
+  context "DELETE #destroy" do
+    context "with sign in user" do
+      it "successfully logout" do
+        post :create, params: {user: {email: valid_user.email, password: valid_user.password}}, format: :json
+        delete :destroy, format: :json
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
 end
