@@ -4,7 +4,7 @@ export function postCreation(post, setErrors, navigate) {
     axios
     .post("/api/v1/posts",
         {
-            post:post
+            post
         },
         {
             withCredentials: true

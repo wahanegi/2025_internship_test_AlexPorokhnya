@@ -1,10 +1,10 @@
 import { useState } from "react"
 import {postCreation} from "../services/post-manipulating";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import {useCurrentUser} from '../hooks/data-fetch'
 import React from "react";
 
-const CreatePost =() => {
+const CreatePost = () => {
     const [post, setPost] = useState({});
     const [errors, setErrors] = useState([]);
     const user = useCurrentUser();
@@ -19,7 +19,12 @@ const CreatePost =() => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        postCreation(post,setErrors,navigate);
+        setErrors([]);
+        if(post.body == null && post.title == null ){
+            setErrors(['Your post is blank']);
+        } else {
+            postCreation(post, setErrors, navigate);
+        }
     }
     return (
         <>
