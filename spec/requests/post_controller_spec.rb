@@ -61,4 +61,74 @@ RSpec.describe Api::V1::PostsController, type: :controller do
       end
     end
   end
+  context "PATCH #update" do
+    let!(:user) { create(:user) }
+    let!(:token) do
+      JWT.encode({ sub: user.id }, Rails.application.secrets.secret_key_base)
+    end
+    let!(:invalid_token) { "invalid_token" }
+    let!(:valid_post) { create(:post, user: user) }
+    context "valid parameters" do
+      let!(:valid_update) { create(:post, title: "New post title", user: user) }
+      it "updating with valid params and authenticate user" do
+        request.cookies[:auth_token] = token
+        post :create, params: { post: {title: valid_post.title, body: valid_post.body}}, format: :json
+
+        expect{
+          patch :update, params: {id:valid_post.id, post: { title: valid_update.title }}, format: :json
+        }.to change(Post, :count).by(0)
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "updating with invalid params and unauthenticated user" do
+        request.cookies[:auth_token] = invalid_token
+        post :create, params: { post: {title: valid_post.title, body: valid_post.body}}, format: :json
+
+        expect{
+          patch :update, params: {id:valid_post.id, post: { title: valid_update.title }}, format: :json
+        }.to change(Post, :count).by(0)
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+    context "invalid parameters" do
+      it "updating with invalid params and authenticate user" do
+        request.cookies[:auth_token] = token
+        post :create, params: { post: {title: valid_post.title, body: valid_post.body}}, format: :json
+
+        expect{
+          patch :update, params: {id:valid_post.id, post: { title: "" }}, format: :json
+        }.to change(Post, :count).by(0)
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
+  context "DELETE #destroy" do
+    let!(:user) { create(:user) }
+    let!(:token) do
+      JWT.encode({ sub: user.id }, Rails.application.secrets.secret_key_base)
+    end
+    let!(:invalid_token) { "invalid_token" }
+    let!(:valid_post) { create(:post, user: user) }
+    context "existing post" do
+      it "deleting of existing post" do
+        request.cookies[:auth_token] = token
+        post :create, params: { post: {title: valid_post.title, body: valid_post.body}}, format: :json
+
+        expect {
+          delete :destroy, params: {id:valid_post.id}, format: :json
+        }.to change(Post, :count).by(-1)
+        expect(response).to have_http_status(:ok)
+      end
+    end
+    context "non-existent post" do
+      it "deleting of existing post" do
+        request.cookies[:auth_token] = token
+        post :create, params: { post: {title: valid_post.title, body: valid_post.body}}, format: :json
+
+        expect {
+          delete :destroy, params: {id: "324"}, format: :json
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
 end

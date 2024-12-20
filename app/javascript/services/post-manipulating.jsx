@@ -20,3 +20,25 @@ export function postCreation(post, setErrors, navigate) {
         )
     })
 }
+
+export function postUpdate(post, id) {
+    axios.
+        patch(`/api/v1/posts/${id}`,
+        {
+            post
+        },
+        {
+            withCredentials: true
+        }).then(res => {
+            window.location.reload()
+        })
+}
+
+export function postDelete(id) {
+    axios.delete(`/api/v1/posts/${id}`,
+        {
+            withCredentials: true
+        }).then(res => {
+        window.location.reload()
+        })
+}
