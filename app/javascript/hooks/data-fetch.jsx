@@ -15,24 +15,3 @@ export function useCurrentUser(){
     }, []);
     return user;
 }
-
-export function usePostFetch() {
-    const [errors, setErrors] = useState([])
-    const [posts, setPosts] = useState([]);
-
-    useEffect(() => {
-        axios
-            .get("/api/v1/posts")
-            .then(resp => {
-                setPosts(resp.data)
-            })
-            .catch(error => {
-                setErrors([
-                    ...errors,
-                    error.data
-                ])
-            })
-    }, [posts.length]);
-
-    return [posts, errors];
-}
