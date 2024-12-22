@@ -23,15 +23,15 @@ export function postCreation(post, setErrors, navigate) {
 }
 
 export function postUpdate(post, id) {
-    axios.
-        patch(`/api/v1/posts/${id}`,
+    return axios.patch(`/api/v1/posts/${id}`,
         {
             post
         },
         {
             withCredentials: true
-        }).then(res => {
-        })
+        }).catch(error => {
+            throw error;
+    })
 }
 export function postFetch(setPosts) {
     axios
@@ -41,9 +41,8 @@ export function postFetch(setPosts) {
         })
 }
 export function postDelete(id) {
-    axios.delete(`/api/v1/posts/${id}`,
+    return axios.delete(`/api/v1/posts/${id}`,
         {
             withCredentials: true
-        }).then(res => {
         })
 }

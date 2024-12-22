@@ -9,33 +9,49 @@ import moment from "moment";
 function App() {
 
     const [posts, setPosts] = useState([]);
-    const [post, setPost] = useState({});
+    const [editedPost, setEditedPost] = useState({});
     const [postId, setPostId] = useState(null);
+    const [errors, setErrors] = useState([]);
     const user = useCurrentUser();
-    const [render, setRender] = useState(false);
-
     useEffect(() => {
         postFetch(setPosts);
-    }, [posts.length, render]);
+    }, []);
     const handleUpdate = (id) => {
         setPostId(id)
     }
 
     const handleSave = (id) => {
-        postUpdate(post, id);
-        setPostId(null);
-        setRender(!render);
+        if(Object.keys(editedPost).length > 0) {
+            postUpdate(editedPost, id).
+            then(resp => {
+                setPosts((prevPosts) =>
+                    prevPosts.map((post) =>
+                        post.id === id ? {...post, ...editedPost} : post
+                    )
+                );
+                setPostId(null);
+                setEditedPost({});
+                setErrors([]);
+            }).catch(error => {
+                setErrors([
+                    error.response.data.data,
+                ])
+            })
+        }else{
+            setPostId(null);
+        }
     }
 
     const handleDelete = (id) => {
         const result = window.confirm("Are you sure you want to delete this tweet?");
         if(result){
-            postDelete(id)
-            setRender(!render);
+            postDelete(id).
+                then(() =>
+                    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id)));
         }
     }
     const handleChange = (e) => {
-        setPost(prev => ({
+        setEditedPost(prev => ({
             ...prev ,
             [e.target.name]: e.target.value,
         }))
@@ -75,6 +91,18 @@ function App() {
                                          key={post.id}>
                                         <p className="card-header">{moment(post.created_at).fromNow()}</p>
                                         <p className="mt-3 card-title">From: {post.email}</p>
+                                        {
+                                            (errors.length > 0 && postId === post.id) &&
+                                            errors.map((err, index) => {
+                                                return(
+                                                    <div className="border border-danger border-3 me-2" key={index}>
+                                                        {!err.body && !err.title && <p>{JSON.stringify(err)}</p>}
+                                                        {err['body'] && <p className="m-2 text-white">Body: {err['body']}</p>}
+                                                        {err['title'] && <p className="m-2 text-white">Title: {err['title']}</p>}
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                         <div className="card-body">
                                             {postId !== post.id ? <p>{post.title}</p> : <input onChange={handleChange} name="title" className="form-control" defaultValue={post.title}></input>}
                                             {postId !== post.id ? <p>{post.body}</p> : <input onChange={handleChange} name="body" className="form-control" defaultValue={post.body}></input>}
