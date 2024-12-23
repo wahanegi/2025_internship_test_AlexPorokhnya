@@ -4,8 +4,16 @@ import {Fragment} from "react";
 import {useCurrentUser} from "../hooks/data-fetch";
 import {logout} from "../services/user-manipulating";
 import {postUpdate, postDelete,postFetch} from "../services/post-manipulating";
+import { FaPen } from "react-icons/fa6";
+import { FaSave } from "react-icons/fa";
+import { FaDeleteLeft } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
+import { FaArrowRightToBracket } from "react-icons/fa6";
+import { FaHouseChimneyUser } from "react-icons/fa6";
+import { FaHouseChimneyMedical } from "react-icons/fa6";
 import moment from "moment";
 
+//TODO: replace field with user email into a button for creating profile with all posts only for specific user
 function App() {
 
     const [posts, setPosts] = useState([]);
@@ -59,20 +67,22 @@ function App() {
 
     return (
         <>
-            <div className="d-flex bg-secondary vh-100">
-                <div className="d-flex flex-column" style={{minWidth: 300}}>
+            <div className="d-flex bg-dark vh-100">
+                <div className="d-flex flex-column border-2 border-end" style={{minWidth: 300}}>
                     {Object.keys(user).length === 0 &&
-                        <div className="d-flex flex-column">
-                            <Link className="btn btn-info m-3" to="/register">Sign Up</Link>
-                            <Link className="btn btn-info m-3" to="/login">Sign In</Link>
+                        <div className="d-flex flex-column me-3">
+                            <Link className="btn btn-success m-3" to="/register"><FaHouseChimneyMedical /> Sign Up</Link>
+                            <Link className="btn btn-info m-3" to="/login"><FaHouseChimneyUser /> Sign In</Link>
                         </div>
                     }
                     {
                         Object.keys(user).length > 0 &&
-                        <div className="d-flex flex-column">
-                            <p className="text-white align-self-center mt-3">{user.email}</p>
-                            <Link className="btn btn-warning rounded-pill m-3" to="/newpost">Add new Post</Link>
-                            <button className="btn btn-warning m-3 align-content-lg-end" onClick={logout}>LogOut</button>
+                        <div className="d-flex flex-column me-3">
+                            <p className="text-white align-self-center mt-3">
+                                {user.email}
+                            </p>
+                            <Link className="d-flex justify-content-center align-items-center btn btn-warning rounded-pill m-3" to="/newpost"><FaPlus /> Add new Post</Link>
+                            <button className="btn btn-secondary m-3 align-content-lg-end" onClick={logout}><FaArrowRightToBracket /> LogOut</button>
                         </div>
                     }
                 </div>
@@ -87,10 +97,9 @@ function App() {
                         {
                             posts.map(post => {
                                 return (
-                                    <div className="card bg-dark mb-3 text-white ps-3" style={{minWidth: 700}}
+                                    <div className="card bg-secondary mb-3 text-white ps-3" style={{minWidth: 700}}
                                          key={post.id}>
-                                        <p className="card-header">{moment(post.created_at).fromNow()}</p>
-                                        <p className="mt-3 card-title">From: {post.email}</p>
+                                        <p className="card-header">From: {post.email} {moment(post.created_at).fromNow()}</p>
                                         {
                                             (errors.length > 0 && postId === post.id) &&
                                             errors.map((err, index) => {
@@ -104,20 +113,20 @@ function App() {
                                             })
                                         }
                                         <div className="card-body">
-                                            {postId !== post.id ? <p>{post.title}</p> : <input onChange={handleChange} name="title" className="form-control" defaultValue={post.title}></input>}
+                                            {postId !== post.id ? <h4>{post.title}</h4> : <input onChange={handleChange} name="title" className="form-control" defaultValue={post.title}></input>}
                                             {postId !== post.id ? <p>{post.body}</p> : <input onChange={handleChange} name="body" className="form-control" defaultValue={post.body}></input>}
                                         </div>
 
                                         {Object.keys(user).length > 0 && post.email === user.email &&
-                                            <div className="d-flex justify-content-between">
+                                            <div className="d-flex justify-content-between align-items-center">
                                                 {
                                                     postId === post.id ?
-                                                    <button className="btn btn-success mb-2"
-                                                            onClick={() => handleSave(post.id)}>Save</button> :
+                                                    <button className="btn btn-success mb-2 d-flex align-items-center justify-content-center"
+                                                            onClick={() => handleSave(post.id)}><FaSave /> Save</button> :
                                                     <button onClick={() => handleUpdate(post.id)}
-                                                            className="btn btn-warning mb-2">Edit</button>
+                                                            className="btn btn-warning mb-2"><FaPen /> Edit</button>
                                                 }
-                                                <button onClick={() => handleDelete(post.id)} className="btn btn-danger m-2">Delete</button>
+                                                <button onClick={() => handleDelete(post.id)} className="btn btn-danger m-2">Delete <FaDeleteLeft /></button>
                                             </div>
                                         }
                                     </div>

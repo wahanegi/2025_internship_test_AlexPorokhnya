@@ -46,6 +46,10 @@ module Api
         end
       end
 
+      #TODO: show specific post
+
+
+
       private
       def post_params
         params.require(:post).permit(:title, :body)
