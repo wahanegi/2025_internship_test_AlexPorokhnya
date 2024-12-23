@@ -13,8 +13,8 @@ module Api
             email: post.email,
             title: post.title,
             body: post.body,
-            created_at: post.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-            updated_at: post.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+            created_at: post.created_at,
+            updated_at: post.updated_at
           )
         end
         render json: formated_posts
