@@ -22,31 +22,31 @@ const Registration = () => {
     return (
         <>
             <div>
-                <div className="bg-secondary" style={{minHeight: 600, minWidth: 400}}>
+                <div className="bg-dark" style={{minHeight: 600, minWidth: 400}}>
                     <div className=" d-flex flex-column justify-content-center align-items-center vh-100">
                         <form onSubmit={handleSubmit}
                               className="d-flex flex-column justify-content-center align-items-center bg-white"
                               style={{minHeight: 600, minWidth: 400}}>
-                            <div className="bg-danger mb-5 w-75 opacity-75 rounded">
+                            <div className="bg-danger mb-5 w-75 bg-opacity-75 rounded text-white">
                                 {errors.length > 0 &&
                                     errors.map((err, index) => {
                                         return (
-                                            <div className=" border border-danger border-3" key={index}>
+                                            <div className="m-3" key={index}>
                                                 {err['email'] &&
-                                                    <p className="fs-5 ms-3 mt-2 text-white">Email: {err['email']}</p>}
+                                                    <p className="m-3">Email: {err['email']}</p>}
                                                 {err['password'] &&
-                                                    <p className="fs-5 mt-2 ms-3 text-white">Password: {err['password']}</p>}
+                                                    <p className="m-3">Password: {err['password']}</p>}
                                                 {!err.email && !err.password && <p>{JSON.stringify(err)}</p>}
                                             </div>
                                         )
                                     })
                                 }
                             </div>
-                            <div className="bg-success mb-5 w-75 opacity-75 rounded">
+                            <div className="bg-success mb-5 w-75 bg-opacity-75 rounded text-white">
                                 {
                                     message.length > 0 &&
-                                    <div className=" border border-susscess border-3">
-                                        <p className="ms-2">{message}</p>
+                                    <div className="m-3">
+                                        <p className="m-2">{message}</p>
                                     </div>
                                 }
                             </div>
